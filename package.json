@@ -17,5 +17,8 @@
     "url": "https://github.com/HaileyN3132/BE_concepts/issues"
   },
   "homepage": "https://github.com/HaileyN3132/BE_concepts#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
 }
