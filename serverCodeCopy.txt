@@ -1,0 +1,21 @@
+app.get("/", (req, res) => {
+  //res.send("Hello World!");
+  res.send("HOME PAGE");
+});
+
+app.get("/about", (req, res) => {
+  res.send("This is ABOUT PAGE");
+});
+
+// Use res.json()
+app.get("/products", (req, res) => {
+  res.json(products);
+});
+
+//Extract params from path
+app.get("/products/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const result = products.filter((product) => product.id === id);
+
+  res.send(result);
+});
