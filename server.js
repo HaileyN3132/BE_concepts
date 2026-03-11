@@ -1,7 +1,6 @@
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
-const { json } = require("stream/consumers");
 const app = express();
 const PORT = 3500;
 
@@ -55,6 +54,23 @@ app.post("/movies", (req, res) => {
 
     fs.writeFile(dataPath, JSON.stringify(movieList), () => {
       res.send("Successfully added new movie!");
+    });
+  });
+});
+
+/* PUT */
+app.put("/movies/:id", (req, res) => {
+  const targetId = Number(req.params.id);
+  // Get newName from request body
+  const newName = req.body.name;
+
+  fs.readFile(dataPath, (err, data) => {
+    const movieList = JSON.parse(data);
+    const index = movieList.findIndex((movie) => movie.id === targetId);
+    //Modify the movie data
+    movieList[index] = { ...movieList[index], name: newName };
+    fs.writeFile(dataPath, JSON.stringify(movieList), () => {
+      res.send(`Movie with id ${targetId} has change its name to ${newName}`);
     });
   });
 });
