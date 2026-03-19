@@ -1,40 +1,13 @@
 const moviesController = require("../controller/moviesController");
-
-const fs = require("fs");
 const express = require("express");
 const router = express.Router();
 
-//These 2 lines below are require to parse data in the request body
-router.use(express.json());
-router.use(express.urlencoded({ extended: true }));
+router.get("/", moviesController.getAllMovies);
 
-//GET
+router.post("/create", moviesController.createMovie);
 
-router.get("/", moviesController.getMovies);
+router.put("/update", moviesController.updateMovie);
 
-router.get("/:id", moviesController.getMovieById);
+router.delete("/delete", moviesController.deleteMovie);
 
-//POST
-router.post("/", moviesController.createMovie);
-
-//PUT
-router.put("/:id", moviesController.updateMovie);
-
-// DELETE
-
-// Only use for testing purpose
-router.delete("/1stMovie", (req, res) => {
-  fs.readFile(dataPath, (err, data) => {
-    const moviesList = JSON.parse(data);
-    const movieRemoved = moviesList.shift();
-
-    fs.writeFile(dataPath, JSON.stringify(moviesList), () => {
-      res.send(`Movie ${movieRemoved.name} removed!`);
-    });
-  });
-});
-
-router.delete("/:id", moviesController.deleteMovie);
-
-// Must export to be use !!!
 module.exports = router;
