@@ -10,6 +10,16 @@ exports.getAllMovies = async (req, res) => {
   }
 };
 
+exports.getMovieById = async (req, res) => {
+  try {
+    const targetId = req.params.id;
+    const movie = await Movie.findById(targetId).exec();
+    handleResponse.sendSuccess(res, 200, movie);
+  } catch (error) {
+    console.log(` ${error}`);
+  }
+};
+
 exports.createMovie = async (req, res) => {
   const newMovie = {
     isFavorite: req.body.isFavorite,
