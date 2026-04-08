@@ -3,9 +3,11 @@ const Movie = require("../model/Movie");
 
 exports.getAllMovies = async (req, res) => {
   const movies = await Movie.find();
-  if (movies.length === 0)
+  if (movies.length === 0) {
     handleResponse.sendSuccess(res, 200, movies, "Movie list is empty!");
-  handleResponse.sendSuccess(res, 200, movies);
+  } else {
+    handleResponse.sendSuccess(res, 200, movies);
+  }
 };
 
 exports.createMovie = async (req, res) => {
@@ -16,29 +18,21 @@ exports.createMovie = async (req, res) => {
     personalRating: Number(req.body.personalRating),
     note: req.body.note,
   };
-  // Perform validation
-  if (newMovie.title === "") {
-    handleResponse.sendError(
-      res,
-      400,
-      undefined,
-      "INPUT_ERROR",
-      "Title cannot be empty",
-    );
-  }
 
-  if (newMovie.personalRating < 0 || newMovie.personalRating > 5) {
-    handleResponse.sendError(
-      res,
-      400,
-      undefined,
-      "INPUT_ERROR",
-      "Invalid rating, enter number (0-5)",
-    );
+  try {
+    const movie = await Movie.create(newMovie);
+    handleResponse.sendSuccess(res, 201, movie, `Movie "${movie}" added!`);
+  } catch (error) {
+    if (newMovie.title === "") {
+      handleResponse.sendError(
+        res,
+        400,
+        undefined,
+        error.name,
+        "Title cannot be empty",
+      );
+    }
   }
-
-  const movie = await Movie.create(newMovie);
-  handleResponse.sendSuccess(res, 201, movie, `Movie "${movie}" added!`);
 };
 
 exports.updateMovie = async (req, res) => {
@@ -50,6 +44,6 @@ exports.updateMovie = async (req, res) => {
 };
 
 exports.deleteMovie = async (req, res) => {
-  const result = await Movie.deleteOne({ title: req.body.title }).exec();
+  const result = await Movie.deleteOne({ _id: req.body.id }).exec();
   res.json(result);
 };
