@@ -45,12 +45,16 @@ exports.createMovie = async (req, res) => {
   }
 };
 
-exports.updateMovie = async (req, res) => {
-  const result = Movie.findOneAndUpdate(
-    { title: req.body.title },
-    { title: req.body.newTitle },
-  ).exec();
-  res.send(result);
+exports.updateMovieById = async (req, res) => {
+  const id = req.params.id;
+  const updatedData = req.body;
+  try {
+    const result = await Movie.findByIdAndUpdate(id, updatedData);
+
+    handleResponse.sendSuccess(res, 200, result, "OK");
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 exports.deleteMovie = async (req, res) => {
