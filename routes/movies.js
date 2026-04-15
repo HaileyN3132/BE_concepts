@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", moviesController.getAllMovies);
+router.get("/suggest", moviesController.suggestMovie);
 router.get("/:id", moviesController.getMovieById);
 
 router.post("/create", moviesController.createMovie);

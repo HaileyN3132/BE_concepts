@@ -1,5 +1,6 @@
 const handleResponse = require("../utils/response");
 const Movie = require("../model/Movie");
+const API_KEY = process.env.TMDB_API_KEY;
 
 exports.getAllMovies = async (req, res) => {
   const movies = await Movie.find();
@@ -60,4 +61,15 @@ exports.updateMovieById = async (req, res) => {
 exports.deleteMovie = async (req, res) => {
   const result = await Movie.deleteOne({ _id: req.body.id }).exec();
   res.json(result);
+};
+
+exports.suggestMovie = async (req, res) => {
+  const query = req.query.title;
+  const response = await fetch(
+    `https://api.themoviedb.org/3/search/tv?api_key=${API_KEY}&query=${encodeURIComponent(query)}`,
+  );
+
+  const result = await response.json();
+  console.log(result); // Testing
+  res.send(result.results);
 };
