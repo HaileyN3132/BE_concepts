@@ -28,6 +28,7 @@ exports.createMovie = async (req, res) => {
     titleCustom: req.body.titleCustom,
     personalRating: Number(req.body.personalRating),
     note: req.body.note,
+    tmdb: req.body.tmdb,
   };
 
   try {

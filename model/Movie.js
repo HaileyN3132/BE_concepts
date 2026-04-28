@@ -11,6 +11,13 @@ const movieSchema = new Schema({
   personalRating: { type: Number, min: 0, max: 5 },
   note: String,
   dateCreated: { type: Date, default: Date.now },
+  tmdb: {
+    id: Number,
+    originCountry: String,
+    originalName: String,
+    overview: String,
+    posterPath: String,
+  },
 });
 
 module.exports = mongoose.model("Movie", movieSchema);
